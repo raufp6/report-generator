@@ -1,12 +1,9 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Report
 from pdfgenerator.views import GeneratePdfPage
 from datetime import datetime
 import time
 from .models import Report
-
-
 
 @receiver(post_save, sender=Report)
 def generate_pdf_on_report_creation(sender, instance, created, **kwargs):
@@ -22,10 +19,9 @@ def generate_pdf_on_report_creation(sender, instance, created, **kwargs):
             'patient_contact':instance.patient_contact,
             'chief_complaint':instance.chief_complaint,
             'consultation_note':instance.consultation_note,
-            'ip':""
         }
         response = GeneratePdfPage(all_data)
 
-        # Update the file_name field of the Report instance
+        # Update generated file name 
         instance.report_pdf_file = response
         instance.save()

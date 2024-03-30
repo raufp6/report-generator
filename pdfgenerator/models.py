@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Report(models.Model):
+    """ Report Model """
     added_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     client_name = models.CharField(max_length=100,default='Clinet name')    
     logo = models.FileField(upload_to='uploads/logos/') 
