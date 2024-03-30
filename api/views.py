@@ -12,6 +12,11 @@ from rest_framework import permissions
 from .serializers import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import HttpResponse
+
+
+from pdfgenerator.serializers import ReportSerializer
+from pdfgenerator.models import Report
+
 from pdfgenerator.views import GeneratePdfPage
 import time
 from datetime import datetime
@@ -59,6 +64,27 @@ class GeneratePDFView(APIView):
             return Response({"message":"Hello world"})
         
         return Response({"message":"error"})
+    
+
+
+    
+
+
+
+class ReportCreateAPIView(APIView):
+    def get(self, request, format=None):
+        reports = Report.objects.all()
+        serializer = ReportSerializer(reports, many=True)
+        return Response(serializer.data)
+    
+    
+    def post(self, request, format=None):
+        serializer = ReportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(added_by=request.user)  # Set the added_by field to the current user
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
         
 
