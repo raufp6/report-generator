@@ -12,8 +12,9 @@ from rest_framework import permissions
 from .serializers import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import HttpResponse
-
-from fpdf import FPDF
+from pdfgenerator.views import GeneratePdfPage
+import time
+from datetime import datetime
 from xhtml2pdf import pisa
 
 import os
@@ -38,58 +39,30 @@ class LogoutView(APIView):
         except Exception as e:
             return Response({'detail': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
         
+class GeneratePDFView(APIView):
+    def get(self, request):
+        # Create a response object
+        all_data = {
+            'logo':'',
+            'timestamp':datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+            'client_name':"Clicks Eon",
+            'physician_name':"Dr.Kiran",
+            'patient_first_name':'Arif',
+            'patient_last_name':'bur',
+            'patient_dob':'12-02-1994',
+            'patient_contact':'+91 8606058722',
+            'chief_complaint':"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)",
+            'consultation_note':"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)",
+            'ip':""
+        }
+        if GeneratePdfPage(all_data):
+            return Response({"message":"Hello world"})
+        
+        return Response({"message":"error"})
+
+        
 
 
 
-def report(request):
-    sales = [
-        {"item": "Abdul", "amount": "$120,00"},
-        {"item": "Mouse", "amount": "$10,00"},
-        {"item": "House", "amount": "$1 000 000,00"},
-    ]
-    pdf = FPDF('P', 'mm', 'A4')
-    pdf.add_page()
-    pdf.set_font('courier', '', 12)
 
-    for line in sales:
-        pdf.cell(200, 8, f"Name : {line['item'].ljust(30)} {line['amount'].rjust(20)}", 0, 1)
-
-    pdf.set_font('courier', '', 10)
-    pdf.multi_cell(180, 10, 'This is what you have sold this month so far:This is what you have sold this month so far:This is what you have sold this month so far:This is what you have sold this month so far:This is what you have sold this month so far:This is what you have sold this month so far:This is what you have sold this month so far:',0,'J')
-    # pdf.cell(40, 10, '',0,1)
-    
-    pdf.cell(200, 8, f"{'Item'.ljust(30)} {'Amount'.rjust(20)}", 0, 1)
-    # pdf.line(10, 30, 150, 30)
-    # pdf.line(10, 38, 150, 38)
-    
-
-    pdf.output('tuto1.pdf', 'F')
-    return HttpResponse("ssasas")
-
-def generate_pdf(request):
-    # Load RML template
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-
-    data = [
-        {"client_name": "Keyboard"},
-        {'contant':"contant"}
-    ]
-    
-    template_path = os.path.join(current_dir, 'invoice_template.html')
-    pdf_path = os.path.join(current_dir, 'invoice.pdf')
-
-    with open(template_path, 'r') as template_file:
-        template_content = template_file.read()
-    
-    # # Render RML to PDF
-    # with open(pdf_path, 'wb') as pdf_file:
-    #     pisa.CreatePDF(template_content, dest=pdf_file)
-
-    # Render RML to PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
-    pisa_status = pisa.CreatePDF(template_content, dest=response)
-    if pisa_status.err:
-        return HttpResponse('Error rendering PDF', status=500)
-    return response
         
