@@ -28,7 +28,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ["13.126.30.188","localhost","127.0.0.1",'localhost:5173']
+# ALLOWED_HOSTS = ["13.126.30.188","localhost","127.0.0.1",'localhost:5173']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -192,7 +193,7 @@ CORS_ALLOW_METHODS = [
     "PUT",
     "PATCH",   # Add any other methods you need
 ]
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1','http://*.127.0.0.1','http://localhost']
 CORS_ORIGIN_ALLOW_ALL = True
 
