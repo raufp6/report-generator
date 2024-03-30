@@ -13,10 +13,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
 
     path('generate_pdf/', GeneratePDFView.as_view(), name='generate_pdf'),
+    path('report/', ReportCreateAPIView.as_view(), name='report'),
     path('save_report/', ReportCreateAPIView.as_view(), name='save_report'),
 
-    # path('report/', report, name='report'),
-    # path('generate_pdf__/', generate_pdf, name='generate_pdf'),
-    # path('gen_pdf_new/', GenerateReportView.as_view(), name='gen_pdf_new'),
 
 ]

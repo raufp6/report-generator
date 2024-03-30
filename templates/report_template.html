@@ -56,13 +56,13 @@
 <body>
     <div class="frontpage">
         <div id="header_content">
-            <img src="./logo.png" alt="Bob Dobbs, CEO of ReportLab Inc." style="float: right;" width="50px">
+            <img src="{{ data.logo }}" alt="Bob Dobbs, CEO of ReportLab Inc." style="float: right;" width="100px">
         </div>
         
         
         <table>
             <tr>
-                <th>Client Name</th>
+                <th>Client Name </th>
                 <td>{{data.client_name}}</td>
                 
                 <th>Physician Name</th>
@@ -89,11 +89,11 @@
     <div class="content">
         <hr>
         <h3>Chief Complaint</h3>
-        {{data.chief_complaint}}
+        {{data.chief_complaint | safe}}
         
         <hr>
         <h3>Consultation Note</h3>
-        {{data.consultation_note}}
+        {{data.consultation_note |safe }}
     </div>
     <div id="footer_content">
          This report generated on  {{data.timestamp}} Page No. <pdf:pagenumber> 

@@ -45,6 +45,7 @@ class LogoutView(APIView):
             return Response({'detail': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)
         
 class GeneratePDFView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request):
         # Create a response object
         all_data = {
@@ -72,12 +73,13 @@ class GeneratePDFView(APIView):
 
 
 class ReportCreateAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         reports = Report.objects.all()
         serializer = ReportSerializer(reports, many=True)
         return Response(serializer.data)
     
-    
+
     def post(self, request, format=None):
         serializer = ReportSerializer(data=request.data)
         if serializer.is_valid():

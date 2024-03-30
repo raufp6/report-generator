@@ -12,7 +12,7 @@ from .models import Report
 def generate_pdf_on_report_creation(sender, instance, created, **kwargs):
     if created:
         all_data = {
-            'logo':'',
+            'logo':instance.logo,
             'timestamp':datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
             'client_name':instance.client_name,
             'physician_name':instance.physician_name,
@@ -20,8 +20,12 @@ def generate_pdf_on_report_creation(sender, instance, created, **kwargs):
             'patient_last_name':instance.patient_last_name,
             'patient_dob':instance.patient_dob,
             'patient_contact':instance.patient_contact,
-            'chief_complaint':"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)",
-            'consultation_note':"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)",
+            'chief_complaint':instance.chief_complaint,
+            'consultation_note':instance.consultation_note,
             'ip':""
         }
-        GeneratePdfPage(all_data)
+        response = GeneratePdfPage(all_data)
+
+        # Update the file_name field of the Report instance
+        instance.report_pdf_file = response
+        instance.save()

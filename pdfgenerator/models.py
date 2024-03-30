@@ -12,7 +12,7 @@ class Report(models.Model):
     patient_last_name = models.CharField(max_length=100,null=True,blank=True)
     patient_dob = models.DateField(null=True,blank=True)
     patient_contact = models.CharField(max_length=15,null=True,blank=True)
-    
+    report_pdf_file = models.CharField(max_length=100,null=True,blank=True)
     chief_complaint = models.CharField(max_length=5000,null=True,blank=True)
     consultation_note = models.CharField(max_length=5000,null=True,blank=True)
     
