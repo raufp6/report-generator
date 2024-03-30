@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ["13.126.30.188","localhost","127.0.0.1"]
+ALLOWED_HOSTS = ["13.126.30.188","localhost","127.0.0.1",'localhost:5173']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #Custom apps
     'api',
+    'pdfgenerator',
     #Installed apps
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -175,11 +176,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+# ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     
 ]
 CORS_ALLOW_METHODS = [
@@ -190,8 +192,8 @@ CORS_ALLOW_METHODS = [
     "PUT",
     "PATCH",   # Add any other methods you need
 ]
-CSRF_COOKIE_SECURE = False
-CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1','http://*.127.0.0.1']
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1','http://*.127.0.0.1','http://localhost']
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Default primary key field type
